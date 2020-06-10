@@ -7,15 +7,15 @@ public final class PetContract {
     public static abstract class PetDataEntry implements BaseColumns{
     public static final String TABLE_NAME = "pets";
 
-        public static final String COLUMN_ID = "_petId";
+        public static final String _ID = "_petId";
 
-        public static final String COLUMN_Name = "name";
+        public static final String COLUMN_PET_Name = "name";
 
-        public static final String COLUMN_BREED = "breed";
+        public static final String COLUMN_PET_BREED = "breed";
 
-        public static final String COLUMN_GENDER = "gender";
+        public static final String COLUMN_PET_GENDER = "gender";
 
-        public static final String COLUMN_WEIGHT = "weight";
+        public static final String COLUMN_PET_WEIGHT = "weight";
 
         //initialize gender
 
