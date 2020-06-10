@@ -13,10 +13,16 @@ public class PetDbHelper extends SQLiteOpenHelper {
     private static final String TEXT_TYPE = "TEXT";
     private static final String COMMA_SEP = ",";
 
+    //CREATE TABLE
     private static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + PetDataEntry.TABLE_NAME + "(" +
             PetDataEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + PetDataEntry.COLUMN_PET_Name + TEXT_TYPE + COMMA_SEP +
             PetDataEntry.COLUMN_PET_BREED + TEXT_TYPE + COMMA_SEP + PetDataEntry.COLUMN_PET_GENDER + " INTEGER NOT NULL DEFAULT 3,"+
             PetDataEntry.COLUMN_PET_WEIGHT + "INTEGER NOT NULL DEFAULT 0"+ ");";
+
+    //DELETE ENTRIES
+    private static final String SQL_DELETE_ENTRIES = " DROP TABLE IF EXISTS " + PetDataEntry.TABLE_NAME;
+
+
 
     public PetDbHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -29,7 +35,13 @@ public class PetDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL(SQL_DELETE_ENTRIES);
+        onCreate(db);
+    }
 
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        super.onDowngrade(db, oldVersion, newVersion);
     }
 }
 
