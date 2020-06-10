@@ -15,6 +15,7 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -81,6 +82,19 @@ public class CatalogActivity extends AppCompatActivity {
         }
     }
 
+    public void InsertData(){
+        PetDbHelper mDbHelper = new PetDbHelper(this);
+
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(PetDataEntry.COLUMN_PET_NAME, "Garfield");
+        values.put(PetDataEntry.COLUMN_PET_BREED, "Tabby");
+        values.put(PetDataEntry.COLUMN_PET_GENDER, PetDataEntry.GENDER_MALE);
+        values.put(PetDataEntry.COLUMN_PET_WEIGHT, 7);
+        db.insert(PetDataEntry.TABLE_NAME, null, values);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_catalog.xml file.
@@ -95,7 +109,7 @@ public class CatalogActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
-                // Do nothing for now
+               InsertData();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
