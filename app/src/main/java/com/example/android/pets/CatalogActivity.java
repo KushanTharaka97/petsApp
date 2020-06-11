@@ -20,11 +20,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
 import com.example.android.pets.data.PetContract.PetDataEntry;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.android.pets.EditorActivity;
@@ -37,6 +40,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
  * Displays list of pets that were entered and stored in the app.
  */
 public class CatalogActivity extends AppCompatActivity {
+    private PetDbHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,7 @@ public class CatalogActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        mDbHelper = new PetDbHelper(this);
         displayDatabaseInfo();
     }
 
@@ -69,7 +74,7 @@ public class CatalogActivity extends AppCompatActivity {
 
         // Perform this raw SQL query "SELECT * FROM pets"
         // to get a Cursor that contains all rows from the pets table.
-        Cursor cursor = db.rawQuery("SELECT * FROM " + PetDataEntry.TABLE_NAME+";", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + PetDataEntry.TABLE_NAME + ";", null);
         try {
             // Display the number of rows in the Cursor (which reflects the number of rows in the
             // pets table in the database).
@@ -82,17 +87,22 @@ public class CatalogActivity extends AppCompatActivity {
         }
     }
 
-    public void InsertData(){
-        PetDbHelper mDbHelper = new PetDbHelper(this);
 
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+    private void InsertData() {
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        // Create a ContentValues object where column names are the keys,
+        // and Toto's pet attributes are the values.
         ContentValues values = new ContentValues();
-
-        values.put(PetDataEntry.COLUMN_PET_NAME, "Garfield");
-        values.put(PetDataEntry.COLUMN_PET_BREED, "Tabby");
+        values.put(PetDataEntry.COLUMN_PET_NAME, "Toto");
+        values.put(PetDataEntry.COLUMN_PET_BREED, "Terrier");
         values.put(PetDataEntry.COLUMN_PET_GENDER, PetDataEntry.GENDER_MALE);
         values.put(PetDataEntry.COLUMN_PET_WEIGHT, 7);
-        db.insert(PetDataEntry.TABLE_NAME, null, values);
+
+
+
+        long newRowId = db.insert(PetDataEntry.TABLE_NAME, null, values);
+        Log.i("CatalogActivity", "New Row Id" + newRowId);
     }
 
     @Override
@@ -109,7 +119,8 @@ public class CatalogActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
-               InsertData();
+                InsertData();
+                displayDatabaseInfo();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:

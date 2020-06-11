@@ -9,7 +9,7 @@ public final class PetContract {
 
         public static final String _ID = "_petId";
 
-        public static final String COLUMN_PET_NAME = "name";
+        public static final String COLUMN_PET_NAME ="name";
 
         public static final String COLUMN_PET_BREED = "breed";
 
