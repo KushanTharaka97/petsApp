@@ -131,17 +131,20 @@ public class EditorActivity extends AppCompatActivity {
         Integer weightInt = Integer.parseInt(weightInsert);
 
 
-        Integer genderInsert = Integer.parseInt(String.valueOf(mGender));
-
             SQLiteDatabase db  = mDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(PetDataEntry.COLUMN_PET_NAME, nameInsert);
         values.put(PetDataEntry.COLUMN_PET_BREED, breedInsert);
-        values.put(PetDataEntry.COLUMN_PET_GENDER, genderInsert);
+        values.put(PetDataEntry.COLUMN_PET_GENDER, mGender);
         values.put(PetDataEntry.COLUMN_PET_WEIGHT, weightInt);
 
         long newRowId = db.insert(PetDataEntry.TABLE_NAME, null, values);
         Log.i("CatalogActivity", "New Row Id" + newRowId);
+        if(newRowId == -1){
+            Toast.makeText(this, "Error in inserting "+nameInsert, Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(EditorActivity.this, "Sucessfully Inserted "+newRowId, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -151,7 +154,7 @@ public class EditorActivity extends AppCompatActivity {
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
                 InsertPet();
-                Toast.makeText(EditorActivity.this, "Sucessfully Inserted", Toast.LENGTH_SHORT).show();
+
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
