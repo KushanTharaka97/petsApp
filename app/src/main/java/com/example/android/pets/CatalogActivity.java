@@ -26,13 +26,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.android.pets.data.PetContract.PetDataEntry;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.android.pets.EditorActivity;
-import com.example.android.pets.R;
-import com.example.android.pets.data.PetContract;
+import com.example.android.pets.data.PetContract.PetDataEntry;
 import com.example.android.pets.data.PetDbHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -67,7 +63,6 @@ public class CatalogActivity extends AppCompatActivity {
     private void displayDatabaseInfo() {
         // To access our database, we instantiate our subclass of SQLiteOpenHelper
         // and pass the context, which is the current activity.
-        PetDbHelper mDbHelper = new PetDbHelper(this);
 
         // Create and/or open a database to read from it
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
@@ -98,7 +93,6 @@ public class CatalogActivity extends AppCompatActivity {
         values.put(PetDataEntry.COLUMN_PET_BREED, "Terrier");
         values.put(PetDataEntry.COLUMN_PET_GENDER, PetDataEntry.GENDER_MALE);
         values.put(PetDataEntry.COLUMN_PET_WEIGHT, 7);
-
 
 
         long newRowId = db.insert(PetDataEntry.TABLE_NAME, null, values);
