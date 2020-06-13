@@ -147,6 +147,8 @@ public class EditorActivity extends AppCompatActivity {
         }
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // User clicked on a menu option in the app bar overflow menu
@@ -154,7 +156,7 @@ public class EditorActivity extends AppCompatActivity {
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
                 InsertPet();
-
+                finish();
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
