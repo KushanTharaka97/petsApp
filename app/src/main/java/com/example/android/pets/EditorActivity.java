@@ -33,6 +33,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 
+import com.example.android.pets.data.PetContract;
 import com.example.android.pets.data.PetContract.PetDataEntry;
 import com.example.android.pets.data.PetDbHelper;
 
@@ -127,6 +128,9 @@ public class EditorActivity extends AppCompatActivity {
         String nameInsert = mNameEditText.getText().toString().trim();
         String breedInsert = mBreedEditText.getText().toString().trim();
         String  weightInsert = mWeightEditText.getText().toString().trim();
+        Integer weightInt = Integer.parseInt(weightInsert);
+
+
         Integer genderInsert = Integer.parseInt(String.valueOf(mGender));
 
             SQLiteDatabase db  = mDbHelper.getWritableDatabase();
@@ -134,7 +138,7 @@ public class EditorActivity extends AppCompatActivity {
         values.put(PetDataEntry.COLUMN_PET_NAME, nameInsert);
         values.put(PetDataEntry.COLUMN_PET_BREED, breedInsert);
         values.put(PetDataEntry.COLUMN_PET_GENDER, genderInsert);
-        values.put(PetDataEntry.COLUMN_PET_WEIGHT, weightInsert);
+        values.put(PetDataEntry.COLUMN_PET_WEIGHT, weightInt);
 
         long newRowId = db.insert(PetDataEntry.TABLE_NAME, null, values);
         Log.i("CatalogActivity", "New Row Id" + newRowId);
