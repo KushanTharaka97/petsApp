@@ -9,9 +9,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class PetProvider extends ContentProvider {
+
+    /** Tag for the log messages */
+    public static final String LOG_TAG = PetProvider.class.getSimpleName();
+
+    /**
+     * Initialize the provider and the database helper object.
+     */
+    PetDbHelper mPetDbHelperObject;
+
     @Override
     public boolean onCreate() {
-        return false;
+        // TODO: Create and initialize a PetDbHelper object to gain access to the pets database.
+        // Make sure the variable is a global variable, so it can be referenced from other
+        // ContentProvider methods.
+        mPetDbHelperObject  = new PetDbHelper(getContext());
+        return true;
     }
 
     @Nullable
