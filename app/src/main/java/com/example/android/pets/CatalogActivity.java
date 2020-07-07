@@ -101,15 +101,23 @@ public class CatalogActivity extends AppCompatActivity {
                 int currentId = cursor.getInt(idColumnIndex);
                 String currentName = cursor.getString(nameColumnIndex);
                 String currentBreed = cursor.getString(breedColumnIndex);
-                String currentGender = cursor.getString(genderColumnIndex);
+                int currentGender = cursor.getInt(genderColumnIndex);
                 int currentWeight = cursor.getInt(weightColumnIndex);
-
+                //gender trasnfering number to text according to previous declarations
+                String currentGenderDisplay;
+                if(currentGender == 1){
+                    currentGenderDisplay = "MALE";
+                }else if(currentGender == 2){
+                    currentGenderDisplay = "FEMALE";
+                }else{
+                    currentGenderDisplay = "UNKNOWN";
+                }
                 //display view of the cursor
                 displayView.append(
                         ("\n"+ currentId + "-"
                         + currentName + "-"
                         + currentBreed + "-"
-                        + currentGender + "-"
+                        + currentGenderDisplay + "-"
                         + currentWeight + "Kg")
                 );
 
