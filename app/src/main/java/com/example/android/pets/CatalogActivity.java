@@ -99,6 +99,13 @@ public class CatalogActivity extends AppCompatActivity {
 
             //count of the table rows
             displayView.setText("Number of rows in pets database table: " + cursor.getCount());
+            //declare top columns of each row data displaying
+            displayView.append(PetDataEntry._ID+" - "
+                    + PetDataEntry.COLUMN_PET_NAME+ " - "
+                    +PetDataEntry.COLUMN_PET_BREED+" - "
+                    +PetDataEntry.COLUMN_PET_GENDER+" - "
+                    +PetDataEntry.COLUMN_PET_WEIGHT);
+
             //iterate the cursor included data to display
             while (cursor.moveToNext()){
 
