@@ -88,6 +88,8 @@ public class CatalogActivity extends AppCompatActivity {
 
 
         try {
+
+
             //figureout the index of each column
             int idColumnIndex = cursor.getColumnIndex(PetDataEntry._ID);
             int nameColumnIndex = cursor.getColumnIndex(PetDataEntry.COLUMN_PET_NAME);
@@ -95,6 +97,8 @@ public class CatalogActivity extends AppCompatActivity {
             int genderColumnIndex = cursor.getColumnIndex(PetDataEntry.COLUMN_PET_GENDER);
             int weightColumnIndex = cursor.getColumnIndex(PetDataEntry.COLUMN_PET_WEIGHT);
 
+            //count of the table rows
+            displayView.setText("Number of rows in pets database table: " + cursor.getCount());
             //iterate the cursor included data to display
             while (cursor.moveToNext()){
 
@@ -114,10 +118,10 @@ public class CatalogActivity extends AppCompatActivity {
                 }
                 //display view of the cursor
                 displayView.append(
-                        ("\n"+ currentId + "-"
-                        + currentName + "-"
-                        + currentBreed + "-"
-                        + currentGenderDisplay + "-"
+                        ("\n"+ currentId + " - "
+                        + currentName + " - "
+                        + currentBreed + " - "
+                        + currentGenderDisplay + " - "
                         + currentWeight + "Kg")
                 );
 
@@ -126,7 +130,7 @@ public class CatalogActivity extends AppCompatActivity {
             // Display the number of rows in the Cursor (which reflects the number of rows in the
             // pets table in the database).
 
-           // displayView.setText("Number of rows in pets database table: " + cursor.getCount());
+
         } finally {
             // Always close the cursor when you're done reading from it. This releases all its
             // resources and makes it invalid.
