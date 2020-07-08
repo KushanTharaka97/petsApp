@@ -103,9 +103,25 @@ public class PetProvider extends ContentProvider {
 
     private Uri insertPet(Uri uri, ContentValues values){
 
+        String name = values.getAsString(PetDataEntry.COLUMN_PET_NAME);
+        if(name == null){
+            throw new IllegalArgumentException("Pet require a name");
+        }
+
+        int gender = values.getAsInteger(PetDataEntry.COLUMN_PET_GENDER);
+        if(!PetDataEntry.isValidGender(gender)){
+            throw new IllegalArgumentException("Valid Gender Required");
+        }
+
+        int weight = values.getAsInteger(PetDataEntry.COLUMN_PET_WEIGHT);
+        if(weight<0){
+            throw new IllegalArgumentException("Must be higher than 0 Kg");
+        }
+
         SQLiteDatabase database = mPetDbHelperObject.getWritableDatabase();
         // https://developer.android.com/guide/topics/providers/content-provider-basics#Inserting
 
+        //sanity check: input validation
 
         // TODO: Insert a new pet into the pets database table with the given ContentValues
         // Defines an object to contain the new values to insert

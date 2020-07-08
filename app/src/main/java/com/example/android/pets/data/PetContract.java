@@ -27,6 +27,13 @@ public final class PetContract {
 
         public static final int GENDER_UNKNOWN = 3;
 
+        //validation gender
+        public static boolean isValidGender(int gender) {
+            if (gender == GENDER_UNKNOWN || gender == GENDER_MALE || gender == GENDER_FEMALE) {
+                return true;
+            }
+            return false;
+        }
             /*
     Lastly, inside each of the Entry classes in the contract,
     we create a full URI for the class as a constant called CONTENT_URI.
