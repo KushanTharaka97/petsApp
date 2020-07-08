@@ -18,6 +18,7 @@ package com.example.android.pets;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -138,13 +139,18 @@ public class EditorActivity extends AppCompatActivity {
         values.put(PetDataEntry.COLUMN_PET_GENDER, mGender);
         values.put(PetDataEntry.COLUMN_PET_WEIGHT, weightInt);
 
-        long newRowId = db.insert(PetDataEntry.TABLE_NAME, null, values);
-        Log.i("CatalogActivity", "New Row Id" + newRowId);
+        Uri newUri = getContentResolver().insert(PetDataEntry.CONTENT_URI, values);
+
+        //long newRowId = db.insert(PetDataEntry.TABLE_NAME, null, values);
+
+       /* Log.i("CatalogActivity", "New Row Id" + newRowId);
         if(newRowId == -1){
             Toast.makeText(this, "Error in inserting "+nameInsert, Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(EditorActivity.this, "Sucessfully Inserted "+newRowId, Toast.LENGTH_SHORT).show();
         }
+        */
+
     }
 
 
