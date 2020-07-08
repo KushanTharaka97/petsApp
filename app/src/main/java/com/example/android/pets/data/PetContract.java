@@ -27,6 +27,15 @@ public final class PetContract {
 
         public static final int GENDER_UNKNOWN = 3;
 
+            /*
+    Lastly, inside each of the Entry classes in the contract,
+    we create a full URI for the class as a constant called CONTENT_URI.
+     The Uri.withAppendedPath() method appends the BASE_CONTENT_URI
+    (which contains the scheme and the content authority) to the path segment.
+     */
+
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI,PATH_PETS);
+
     }
     //Content Authority
     public static final String CONTENT_AUTHORITY = "com.example.android.pets";
@@ -37,12 +46,5 @@ public final class PetContract {
     public static final String PATH_PETS = PetDataEntry.TABLE_NAME;
 
     //Complete CONTENT_URI
-    /*
-    Lastly, inside each of the Entry classes in the contract,
-    we create a full URI for the class as a constant called CONTENT_URI.
-     The Uri.withAppendedPath() method appends the BASE_CONTENT_URI
-    (which contains the scheme and the content authority) to the path segment.
-     */
 
-    public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI,PATH_PETS);
 }

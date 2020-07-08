@@ -90,19 +90,16 @@ public class CatalogActivity extends AppCompatActivity {
                 null,
                 null);
          */
-        Cursor cursor = getContentResolver().query(PetContract.BASE_CONTENT_URI, projection, null,null,null);
+        Cursor cursor = getContentResolver().query(
+                PetDataEntry.CONTENT_URI,
+                projection,
+                null,
+                null,
+                null
+        );
 
 
         try {
-
-
-            //figureout the index of each column
-            int idColumnIndex = cursor.getColumnIndex(PetDataEntry._ID);
-            int nameColumnIndex = cursor.getColumnIndex(PetDataEntry.COLUMN_PET_NAME);
-            int breedColumnIndex = cursor.getColumnIndex(PetDataEntry.COLUMN_PET_BREED);
-            int genderColumnIndex = cursor.getColumnIndex(PetDataEntry.COLUMN_PET_GENDER);
-            int weightColumnIndex = cursor.getColumnIndex(PetDataEntry.COLUMN_PET_WEIGHT);
-
             //count of the table rows
             displayView.setText("Number of rows in pets database table: " + cursor.getCount());
             //declare top columns of each row data displaying
@@ -112,6 +109,13 @@ public class CatalogActivity extends AppCompatActivity {
                     +PetDataEntry.COLUMN_PET_GENDER+" - "
                     +PetDataEntry.COLUMN_PET_WEIGHT);
 
+            //figureout the index of each column
+            int idColumnIndex = cursor.getColumnIndex(PetDataEntry._ID);
+            int nameColumnIndex = cursor.getColumnIndex(PetDataEntry.COLUMN_PET_NAME);
+            int breedColumnIndex = cursor.getColumnIndex(PetDataEntry.COLUMN_PET_BREED);
+            int genderColumnIndex = cursor.getColumnIndex(PetDataEntry.COLUMN_PET_GENDER);
+            int weightColumnIndex = cursor.getColumnIndex(PetDataEntry.COLUMN_PET_WEIGHT);
+
             //iterate the cursor included data to display
             while (cursor.moveToNext()){
 
@@ -120,6 +124,7 @@ public class CatalogActivity extends AppCompatActivity {
                 String currentBreed = cursor.getString(breedColumnIndex);
                 int currentGender = cursor.getInt(genderColumnIndex);
                 int currentWeight = cursor.getInt(weightColumnIndex);
+
                 //gender trasnfering number to text according to previous declarations
                 String currentGenderDisplay;
                 if(currentGender == 1){

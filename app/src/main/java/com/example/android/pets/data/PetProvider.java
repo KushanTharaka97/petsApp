@@ -36,7 +36,7 @@ public class PetProvider extends ContentProvider {
 
         // TODO: Add 2 content URIs to URI matcher
         sUriMatcher.addURI(PetContract.CONTENT_AUTHORITY, PetContract.PATH_PETS, PETS);
-        sUriMatcher.addURI(PetContract.CONTENT_AUTHORITY,PetContract.PATH_PETS,PET_ID);
+        sUriMatcher.addURI(PetContract.CONTENT_AUTHORITY,PetContract.PATH_PETS+ "/#" ,PET_ID);
     }
 
     /**
