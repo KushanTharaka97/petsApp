@@ -33,9 +33,9 @@ public class PetProvider extends ContentProvider {
         // when a match is found.
 
         // TODO: Add 2 content URIs to URI matcher
+        sUriMatcher.addURI(PetContract.CONTENT_AUTHORITY, PetContract.PATH_PETS, PETS);
+        sUriMatcher.addURI(PetContract.CONTENT_AUTHORITY,PetContract.PATH_PETS,PET_ID);
     }
-
-
 
     /**
      * Initialize the provider and the database helper object.
@@ -44,7 +44,7 @@ public class PetProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        // TODO: Create and initialize a PetDbHelper object to gain access to the pets database.
+
         // Make sure the variable is a global variable, so it can be referenced from other
         // ContentProvider methods.
         mPetDbHelperObject  = new PetDbHelper(getContext());
