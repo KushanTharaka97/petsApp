@@ -23,7 +23,7 @@ public class PetProvider extends ContentProvider {
     /** URI matcher code for the content URI for a single pet in the pets table */
     private static final int PET_ID = 101;
 
-    private PetDbHelper mDbHelper;
+
     /**
      * UriMatcher object to match a content URI to a corresponding code.
      * The input passed into the constructor represents the code to return for the root URI.
@@ -45,7 +45,7 @@ public class PetProvider extends ContentProvider {
     /**
      * Initialize the provider and the database helper object.
      */
-    PetDbHelper mPetDbHelperObject;
+   private PetDbHelper mPetDbHelperObject;
 
     @Override
     public boolean onCreate() {
@@ -87,13 +87,13 @@ public class PetProvider extends ContentProvider {
         return null;
     }
 
-    @Nullable
+
     @Override
-    public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
+    public Uri insert( Uri uri,  ContentValues contentValues) {
             final int match = sUriMatcher.match(uri);
             switch(match){
                 case PETS:
-                    return insertPet(uri, values);
+                    return insertPet(uri, contentValues);
                 default:
                     throw new IllegalArgumentException("Insertion Not Suppor for "+ uri);
         }
@@ -103,9 +103,9 @@ public class PetProvider extends ContentProvider {
 
     private Uri insertPet(Uri uri, ContentValues values){
 
-        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+        SQLiteDatabase database = mPetDbHelperObject.getWritableDatabase();
         // https://developer.android.com/guide/topics/providers/content-provider-basics#Inserting
-        Uri newUri;
+
 
         // TODO: Insert a new pet into the pets database table with the given ContentValues
         // Defines an object to contain the new values to insert
