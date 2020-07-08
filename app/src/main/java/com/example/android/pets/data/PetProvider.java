@@ -66,19 +66,15 @@ public class PetProvider extends ContentProvider {
                 cursor = database.query(PetDataEntry.TABLE_NAME, projection,selection,selectionArgs,null,null,sortOrder);
                 break;
 
-
             case PET_ID:
                 selection = PetDataEntry._ID+"=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 cursor = database.query(PetDataEntry.TABLE_NAME, projection,selection,selectionArgs,null,null,sortOrder);
                 break;
 
-
             default:
                 throw new IllegalArgumentException("Cannot querry unknown uri :"+ uri);
         }
-
-
         return cursor;
     }
 
@@ -91,7 +87,26 @@ public class PetProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
+            final int match = sUriMatcher.match(uri);
+            switch(match){
+                case PETS:
+                    return insertPet(uri, values);
+                default:
+                    throw new IllegalArgumentException("Insertion Not Suppor for "+ uri);
+        }
+
+
+    }
+
+    private Uri insertPet(Uri uri, ContentValues values){
+
+        // TODO: Insert a new pet into the pets database table with the given ContentValues
+            Uri newUri;
+
+
+        // Once we know the ID of the new row in the table,
+        // return the new URI with the ID appended to the end of it
+        return ContentUris.withAppendedId(uri, id);
     }
 
     @Override
