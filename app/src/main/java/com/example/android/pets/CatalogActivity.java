@@ -71,7 +71,7 @@ public class CatalogActivity extends AppCompatActivity {
         TextView displayView = (TextView) findViewById(R.id.text_view_pet);
 
         // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+      //  SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         String[] projection = {
                 PetDataEntry.COLUMN_PET_NAME,

@@ -132,7 +132,7 @@ public class EditorActivity extends AppCompatActivity {
         Integer weightInt = Integer.parseInt(weightInsert);
 
 
-            SQLiteDatabase db  = mDbHelper.getWritableDatabase();
+            //SQLiteDatabase db  = mDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(PetDataEntry.COLUMN_PET_NAME, nameInsert);
         values.put(PetDataEntry.COLUMN_PET_BREED, breedInsert);
@@ -140,6 +140,18 @@ public class EditorActivity extends AppCompatActivity {
         values.put(PetDataEntry.COLUMN_PET_WEIGHT, weightInt);
 
         Uri newUri = getContentResolver().insert(PetDataEntry.CONTENT_URI, values);
+
+        // Show a toast message depending on whether or not the insertion was successful
+        if (newUri == null) {
+            // If the new content URI is null, then there was an error with insertion.
+            Toast.makeText(this, getString(R.string.editor_insert_pet_failed),
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            // Otherwise, the insertion was successful and we can display a toast.
+            Toast.makeText(this, getString(R.string.editor_insert_pet_successful),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
 
         //long newRowId = db.insert(PetDataEntry.TABLE_NAME, null, values);
 
@@ -151,7 +163,7 @@ public class EditorActivity extends AppCompatActivity {
         }
         */
 
-    }
+
 
 
 
@@ -162,6 +174,7 @@ public class EditorActivity extends AppCompatActivity {
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
                 InsertPet();
+
                 finish();
                 return true;
             // Respond to a click on the "Delete" menu option
