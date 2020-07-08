@@ -7,6 +7,8 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
+
 import com.example.android.pets.data.PetContract.PetDataEntry;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -107,7 +109,13 @@ public class PetProvider extends ContentProvider {
 
         // TODO: Insert a new pet into the pets database table with the given ContentValues
         // Defines an object to contain the new values to insert
+       long id = database.insert(PetDataEntry.TABLE_NAME,null,values);
 
+       if(id == -1){
+           Log.e(LOG_TAG,"Failed to insert "+ uri);
+           return null;
+       }
+       return ContentUris.withAppendedId(uri, id);
     }
 
     @Override
