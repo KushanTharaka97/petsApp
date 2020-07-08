@@ -158,7 +158,7 @@ public class CatalogActivity extends AppCompatActivity {
 
 
     private void InsertData() {
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        //SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         // Create a ContentValues object where column names are the keys,
         // and Toto's pet attributes are the values.
