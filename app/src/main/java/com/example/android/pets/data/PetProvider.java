@@ -21,6 +21,7 @@ public class PetProvider extends ContentProvider {
     /** URI matcher code for the content URI for a single pet in the pets table */
     private static final int PET_ID = 101;
 
+    private PetDbHelper mDbHelper;
     /**
      * UriMatcher object to match a content URI to a corresponding code.
      * The input passed into the constructor represents the code to return for the root URI.
@@ -100,13 +101,13 @@ public class PetProvider extends ContentProvider {
 
     private Uri insertPet(Uri uri, ContentValues values){
 
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+        // https://developer.android.com/guide/topics/providers/content-provider-basics#Inserting
+        Uri newUri;
+
         // TODO: Insert a new pet into the pets database table with the given ContentValues
-            Uri newUri;
+        // Defines an object to contain the new values to insert
 
-
-        // Once we know the ID of the new row in the table,
-        // return the new URI with the ID appended to the end of it
-        return ContentUris.withAppendedId(uri, id);
     }
 
     @Override
