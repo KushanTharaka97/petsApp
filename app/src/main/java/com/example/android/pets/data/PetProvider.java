@@ -1,11 +1,13 @@
 package com.example.android.pets.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-
+import com.example.android.pets.data.PetContract.PetDataEntry;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -54,7 +56,30 @@ public class PetProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        return null;
+        SQLiteDatabase database = mPetDbHelperObject.getReadableDatabase();
+
+        Cursor cursor;
+
+        int match = sUriMatcher.match(uri);
+        switch (match){
+            case PETS:
+                cursor = database.query(PetDataEntry.TABLE_NAME, projection,selection,selectionArgs,null,null,sortOrder);
+                break;
+
+
+            case PET_ID:
+                selection = PetDataEntry._ID+"=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                cursor = database.query(PetDataEntry.TABLE_NAME, projection,selection,selectionArgs,null,null,sortOrder);
+                break;
+
+
+            default:
+                throw new IllegalArgumentException("Cannot querry unknown uri :"+ uri);
+        }
+
+
+        return cursor;
     }
 
     @Nullable
