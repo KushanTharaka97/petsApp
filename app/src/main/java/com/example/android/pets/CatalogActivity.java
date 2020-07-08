@@ -15,10 +15,12 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,8 +30,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.android.pets.data.PetContract;
 import com.example.android.pets.data.PetContract.PetDataEntry;
 import com.example.android.pets.data.PetDbHelper;
+import com.example.android.pets.data.PetProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
@@ -78,13 +82,15 @@ public class CatalogActivity extends AppCompatActivity {
         };
 
         //new query type called "query for security reasons"
-        Cursor cursor = db.query(PetDataEntry.TABLE_NAME,
+        /**Cursor cursor = db.query(PetDataEntry.TABLE_NAME,
                 projection,
                 null,
                 null,
                 null,
                 null,
                 null);
+         */
+        Cursor cursor = getContentResolver().query(PetContract.BASE_CONTENT_URI, projection, null,null,null);
 
 
         try {
