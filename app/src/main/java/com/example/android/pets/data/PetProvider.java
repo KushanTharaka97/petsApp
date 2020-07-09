@@ -107,7 +107,6 @@ public class PetProvider extends ContentProvider {
                     throw new IllegalArgumentException("Insertion Not Suppor for "+ uri);
         }
 
-
     }
 
     private Uri insertPet(Uri uri, ContentValues values){
