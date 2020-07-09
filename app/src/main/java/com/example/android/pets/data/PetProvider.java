@@ -9,9 +9,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
-import com.example.android.pets.data.PetContract.PetDataEntry;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.android.pets.data.PetContract.PetDataEntry;
 
 public class PetProvider extends ContentProvider {
 
@@ -108,13 +109,13 @@ public class PetProvider extends ContentProvider {
             throw new IllegalArgumentException("Pet require a name");
         }
 
-        int gender = values.getAsInteger(PetDataEntry.COLUMN_PET_GENDER);
-        if(!PetDataEntry.isValidGender(gender)){
+        Integer gender = values.getAsInteger(PetDataEntry.COLUMN_PET_GENDER);
+        if( gender == null || !PetDataEntry.isValidGender(gender)){
             throw new IllegalArgumentException("Valid Gender Required");
         }
 
-        int weight = values.getAsInteger(PetDataEntry.COLUMN_PET_WEIGHT);
-        if(weight<0){
+        Integer weight = values.getAsInteger(PetDataEntry.COLUMN_PET_WEIGHT);
+        if(weight == null || weight<0){
             throw new IllegalArgumentException("Must be higher than 0 Kg");
         }
 
@@ -166,8 +167,8 @@ public class PetProvider extends ContentProvider {
             throw new IllegalArgumentException("Pet require a name");
         }
 
-        int gender = values.getAsInteger(PetDataEntry.COLUMN_PET_GENDER);
-        if(!PetDataEntry.isValidGender(gender)){
+        Integer gender = values.getAsInteger(PetDataEntry.COLUMN_PET_GENDER);
+        if(gender == null || !PetDataEntry.isValidGender(gender)){
             throw new IllegalArgumentException("Valid Gender Required");
         }
 
