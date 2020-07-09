@@ -171,8 +171,8 @@ public class PetProvider extends ContentProvider {
             throw new IllegalArgumentException("Valid Gender Required");
         }
 
-        int weight = values.getAsInteger(PetDataEntry.COLUMN_PET_WEIGHT);
-        if(weight<0){
+        Integer weight = values.getAsInteger(PetDataEntry.COLUMN_PET_WEIGHT);
+        if(weight<0 || weight == null){
             throw new IllegalArgumentException("Must be higher than 0 Kg");
         }
 
@@ -182,7 +182,8 @@ public class PetProvider extends ContentProvider {
 
         SQLiteDatabase databaseForUpdatePet = mPetDbHelperObject.getWritableDatabase();
 
-        // TODO: Update the selected pets in the pets database table with the given ContentValues
+
+        // Returns the number of database rows affected by the update statement
         long id = databaseForUpdatePet.update(PetDataEntry.TABLE_NAME,values,selection,selectionArgs);
 
         if(id == -1){
@@ -190,7 +191,6 @@ public class PetProvider extends ContentProvider {
             return 0;
         }
 
-        // TODO: Return the number of rows that were affected
         //return ContentUris.withAppendedId(uri, id);
         return 0;
     }
