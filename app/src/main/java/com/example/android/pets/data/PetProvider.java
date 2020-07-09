@@ -141,6 +141,26 @@ public class PetProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
+    final int match = sUriMatcher.match(uri);
+
+    switch(match){
+        case PETS:
+            return update(uri,values,selection,selectionArgs);
+
+        case PET_ID:
+            selection = PetDataEntry._ID+"=?";
+            selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+
+            return updatePet(uri,values,selection,selectionArgs);
+
+        default:
+            throw new IllegalArgumentException("Update is not support for "+ uri);
+    }
+
+    }
+
+    private int updatePet(Uri uri, ContentValues values, String selection, String[] selectionArgs){
+
         return 0;
     }
 }
