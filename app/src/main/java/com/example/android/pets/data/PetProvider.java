@@ -85,7 +85,15 @@ public class PetProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        return null;
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case PETS:
+                return PetDataEntry.CONTENT_LIST_TYPE;
+            case PET_ID:
+                return PetDataEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
+        }
     }
 
 
@@ -211,4 +219,6 @@ public class PetProvider extends ContentProvider {
         //return ContentUris.withAppendedId(uri, id);
         return 0;
     }
+
+
 }
