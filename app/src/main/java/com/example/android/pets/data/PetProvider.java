@@ -160,7 +160,38 @@ public class PetProvider extends ContentProvider {
     }
 
     private int updatePet(Uri uri, ContentValues values, String selection, String[] selectionArgs){
+        //sanity check
+        String name = values.getAsString(PetDataEntry.COLUMN_PET_NAME);
+        if(name == null){
+            throw new IllegalArgumentException("Pet require a name");
+        }
 
+        int gender = values.getAsInteger(PetDataEntry.COLUMN_PET_GENDER);
+        if(!PetDataEntry.isValidGender(gender)){
+            throw new IllegalArgumentException("Valid Gender Required");
+        }
+
+        int weight = values.getAsInteger(PetDataEntry.COLUMN_PET_WEIGHT);
+        if(weight<0){
+            throw new IllegalArgumentException("Must be higher than 0 Kg");
+        }
+
+        if(values.size()==0){
+            return 0;
+        }
+
+        SQLiteDatabase databaseForUpdatePet = mPetDbHelperObject.getWritableDatabase();
+
+        // TODO: Update the selected pets in the pets database table with the given ContentValues
+        long id = databaseForUpdatePet.update(PetDataEntry.TABLE_NAME,values,selection,selectionArgs);
+
+        if(id == -1){
+            Log.e(LOG_TAG,"Failed to insert "+ uri);
+            return 0;
+        }
+
+        // TODO: Return the number of rows that were affected
+        //return ContentUris.withAppendedId(uri, id);
         return 0;
     }
 }
