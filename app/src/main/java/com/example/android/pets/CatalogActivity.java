@@ -15,34 +15,37 @@
  */
 package com.example.android.pets;
 
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
-import com.example.android.pets.data.PetContract;
 import com.example.android.pets.data.PetContract.PetDataEntry;
 import com.example.android.pets.data.PetDbHelper;
-import com.example.android.pets.data.PetProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.example.android.pets.PetCursorAdapter;
 
 /**
  * Displays list of pets that were entered and stored in the app.
  */
-public class CatalogActivity extends AppCompatActivity {
+public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private PetDbHelper mDbHelper;
+
+    //identify a certain loader
+    private static final int URL_LOADER = 0;
+
+    PetCursorAdapter mCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +61,6 @@ public class CatalogActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
 
     @Override
@@ -69,14 +70,13 @@ public class CatalogActivity extends AppCompatActivity {
         mDbHelper = new PetDbHelper(this);
     }
 
-
     /**
      * Temporary helper method to display information in the onscreen TextView about the state of
      * the pets database.
      */
     private void displayDatabaseInfo() {
         // Create and/or open a database to read from it
-      //  SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        //  SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         String[] projection = {
                 PetDataEntry._ID,
@@ -118,16 +118,11 @@ public class CatalogActivity extends AppCompatActivity {
         values.put(PetDataEntry.COLUMN_PET_WEIGHT, 9);
 
 
-       //Below method is so vulnerable so we have to deduct it by commenting
-        //have declare new method for the inserting data to the database
-        /* long newRowId = db.insert(PetDataEntry.TABLE_NAME, null, values);
-        Log.i("CatalogActivity", "New Row Id" + newRowId); */
-
-                //   Insert a new row for Toto into the provider using the ContentResolver.
-                // Use the {@link PetEntry#CONTENT_URI} to indicate that we want to insert
-                // into the pets database table.
-                // Receive the new content URI that will allow us to access Toto's data in the future.
-        Uri newUri = getContentResolver().insert(PetDataEntry.CONTENT_URI,values);
+        //   Insert a new row for Toto into the provider using the ContentResolver.
+        // Use the {@link PetEntry#CONTENT_URI} to indicate that we want to insert
+        // into the pets database table.
+        // Receive the new content URI that will allow us to access Toto's data in the future.
+        Uri newUri = getContentResolver().insert(PetDataEntry.CONTENT_URI, values);
 
     }
 
@@ -154,5 +149,30 @@ public class CatalogActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+        //projection defined
+        String[] projection = {
+                PetDataEntry._ID,
+                PetDataEntry.COLUMN_PET_NAME,
+                PetDataEntry.COLUMN_PET_BREED
+        };
+        return new CursorLoader(this, PetDataEntry.CONTENT_URI, projection, null, null, null);
+
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        //update with the new cursor
+        mCursorAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        //clear the cursor
+        mCursorAdapter.swapCursor(null);
     }
 }
