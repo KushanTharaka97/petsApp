@@ -223,6 +223,9 @@ public class PetProvider extends ContentProvider {
             return 0;
         }
 
+        //notify all the listners when data has changed for the pet content URI
+        getContext().getContentResolver().notifyChange(uri,null);
+
         //return ContentUris.withAppendedId(uri, id);
         return 0;
     }
