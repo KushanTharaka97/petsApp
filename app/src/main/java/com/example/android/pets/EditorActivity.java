@@ -53,6 +53,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     //identify a certain loader
     private static final int PET_LOADER = 0;
 
+    /** Content URI for the existing pet (null if it's a new pet) */
+    private Uri mCurrentPetUri;
+
     PetCursorAdapter mCursorAdapter;
 
     private PetDbHelper mDbHelper;
@@ -82,12 +85,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         //get the intent that send by the CatelogActivity
         Intent intent = getIntent();
-        Uri currentPetUri = intent.getData();
+        mCurrentPetUri = intent.getData();
 
-        if(currentPetUri == null){
+        if(mCurrentPetUri == null){
             setTitle(getString(R.string.editor_activity_title_new_pet));
         }else{
             setTitle(getString(R.string.editor_activity_title_edit_pet));
+            // Initialize a loader to read the pet data from the database
+            // and display the current values in the editor
+            LoaderManager.getInstance(this).initLoader(PET_LOADER, null, this);
+
         }
 
 
@@ -176,7 +183,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                     Toast.LENGTH_SHORT).show();
         }
     }
-
         //long newRowId = db.insert(PetDataEntry.TABLE_NAME, null, values);
 
        /* Log.i("CatalogActivity", "New Row Id" + newRowId);
@@ -186,11 +192,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             Toast.makeText(EditorActivity.this, "Sucessfully Inserted "+newRowId, Toast.LENGTH_SHORT).show();
         }
         */
-
-
-
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // User clicked on a menu option in the app bar overflow menu
@@ -224,7 +225,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 PetDataEntry.COLUMN_PET_GENDER,
                 PetDataEntry.COLUMN_PET_WEIGHT
         };
-        return new CursorLoader(this,PetDataEntry.CONTENT_URI,projection,null,null,null);
+
+        return new CursorLoader(this,
+                mCurrentPetUri,
+                projection,
+                null,
+                null,
+                null);
+
     }
 
     @Override
