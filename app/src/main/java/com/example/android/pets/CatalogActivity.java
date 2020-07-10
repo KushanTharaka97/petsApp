@@ -66,18 +66,17 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     @Override
     protected void onStart() {
         super.onStart();
-        displayDatabaseInfo();
+       // displayDatabaseInfo();
         mDbHelper = new PetDbHelper(this);
     }
 
     /**
      * Temporary helper method to display information in the onscreen TextView about the state of
      * the pets database.
-     */
+
     private void displayDatabaseInfo() {
         // Create and/or open a database to read from it
         //  SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
         String[] projection = {
                 PetDataEntry._ID,
                 PetDataEntry.COLUMN_PET_NAME,
@@ -104,7 +103,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         petDisplayList.setEmptyView(emptyView);
 
     }
-
+     */
 
     private void InsertData() {
         //SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -141,7 +140,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
                 InsertData();
-                displayDatabaseInfo();
+                //displayDatabaseInfo();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
