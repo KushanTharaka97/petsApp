@@ -79,6 +79,10 @@ public class PetProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Cannot querry unknown uri :"+ uri);
         }
+
+        //we need hot reload so we is using that UpdateNotifier
+        cursor.setNotificationUri(getContext().getContentResolver(),uri);
+
         return cursor;
     }
 
