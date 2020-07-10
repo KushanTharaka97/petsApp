@@ -240,7 +240,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             return;
         }
 
-        if (cursor.moveToNext()) {
+        if (cursor.moveToFirst()) {
             int nameColumnIndex = cursor.getColumnIndex(PetDataEntry.COLUMN_PET_NAME);
             int breedColumnIndex = cursor.getColumnIndex(PetDataEntry.COLUMN_PET_BREED);
             int genderColumnIndex = cursor.getColumnIndex(PetDataEntry.COLUMN_PET_GENDER);
@@ -254,7 +254,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
             mNameEditText.setText(name);
             mBreedEditText.setText(breed);
-            mWeightEditText.setText(weight);
+            mWeightEditText.setText(Integer.toString(weight));
 
             // Gender is a dropdown spinner, so map the constant value from the database
             // into one of the dropdown options (0 is Unknown, 1 is Male, 2 is Female).

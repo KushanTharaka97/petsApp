@@ -16,12 +16,18 @@ import com.example.android.pets.data.PetContract.PetDataEntry;
 
 public class PetProvider extends ContentProvider {
 
-    /** Tag for the log messages */
+    /**
+     * Tag for the log messages
+     */
     public static final String LOG_TAG = PetProvider.class.getSimpleName();
-    /** URI matcher code for the content URI for the pets table */
+    /**
+     * URI matcher code for the content URI for the pets table
+     */
     private static final int PETS = 100;
 
-    /** URI matcher code for the content URI for a single pet in the pets table */
+    /**
+     * URI matcher code for the content URI for a single pet in the pets table
+     */
     private static final int PET_ID = 101;
 
 
@@ -40,20 +46,20 @@ public class PetProvider extends ContentProvider {
 
         // TODO: Add 2 content URIs to URI matcher
         sUriMatcher.addURI(PetContract.CONTENT_AUTHORITY, PetContract.PATH_PETS, PETS);
-        sUriMatcher.addURI(PetContract.CONTENT_AUTHORITY,PetContract.PATH_PETS+ "/#" ,PET_ID);
+        sUriMatcher.addURI(PetContract.CONTENT_AUTHORITY, PetContract.PATH_PETS + "/#", PET_ID);
     }
 
     /**
      * Initialize the provider and the database helper object.
      */
-   private PetDbHelper mPetDbHelperObject;
+    private PetDbHelper mPetDbHelperObject;
 
     @Override
     public boolean onCreate() {
 
         // Make sure the variable is a global variable, so it can be referenced from other
         // ContentProvider methods.
-        mPetDbHelperObject  = new PetDbHelper(getContext());
+        mPetDbHelperObject = new PetDbHelper(getContext());
         return true;
     }
 
@@ -65,23 +71,23 @@ public class PetProvider extends ContentProvider {
         Cursor cursor;
 
         int match = sUriMatcher.match(uri);
-        switch (match){
+        switch (match) {
             case PETS:
-                cursor = database.query(PetDataEntry.TABLE_NAME, projection,selection,selectionArgs,null,null,sortOrder);
+                cursor = database.query(PetDataEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
 
             case PET_ID:
-                selection = PetDataEntry._ID+"=?";
+                selection = PetDataEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                cursor = database.query(PetDataEntry.TABLE_NAME, projection,selection,selectionArgs,null,null,sortOrder);
+                cursor = database.query(PetDataEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
 
             default:
-                throw new IllegalArgumentException("Cannot querry unknown uri :"+ uri);
+                throw new IllegalArgumentException("Cannot querry unknown uri :" + uri);
         }
 
         //we need hot reload so we is using that UpdateNotifier
-        cursor.setNotificationUri(getContext().getContentResolver(),uri);
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
         return cursor;
     }
@@ -102,31 +108,31 @@ public class PetProvider extends ContentProvider {
 
 
     @Override
-    public Uri insert( Uri uri,  ContentValues contentValues) {
-            final int match = sUriMatcher.match(uri);
-            switch(match){
-                case PETS:
-                    return insertPet(uri, contentValues);
-                default:
-                    throw new IllegalArgumentException("Insertion Not Suppor for "+ uri);
+    public Uri insert(Uri uri, ContentValues contentValues) {
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case PETS:
+                return insertPet(uri, contentValues);
+            default:
+                throw new IllegalArgumentException("Insertion Not Suppor for " + uri);
         }
 
     }
 
-    private Uri insertPet(Uri uri, ContentValues values){
+    private Uri insertPet(Uri uri, ContentValues values) {
 
         String name = values.getAsString(PetDataEntry.COLUMN_PET_NAME);
-        if(name == null){
+        if (name == null) {
             throw new IllegalArgumentException("Pet require a name");
         }
 
         Integer gender = values.getAsInteger(PetDataEntry.COLUMN_PET_GENDER);
-        if( gender == null || !PetDataEntry.isValidGender(gender)){
+        if (gender == null || !PetDataEntry.isValidGender(gender)) {
             throw new IllegalArgumentException("Valid Gender Required");
         }
 
         Integer weight = values.getAsInteger(PetDataEntry.COLUMN_PET_WEIGHT);
-        if(weight == null || weight<0){
+        if (weight == null || weight < 0) {
             throw new IllegalArgumentException("Must be higher than 0 Kg");
         }
 
@@ -137,17 +143,17 @@ public class PetProvider extends ContentProvider {
 
         // TODO: Insert a new pet into the pets database table with the given ContentValues
         // Defines an object to contain the new values to insert
-       long id = database.insert(PetDataEntry.TABLE_NAME,null,values);
+        long id = database.insert(PetDataEntry.TABLE_NAME, null, values);
 
-       if(id == -1){
-           Log.e(LOG_TAG,"Failed to insert "+ uri);
-           return null;
-       }
+        if (id == -1) {
+            Log.e(LOG_TAG, "Failed to insert " + uri);
+            return null;
+        }
 
-       //notify all the listners when data has changed for the pet content URI
-        getContext().getContentResolver().notifyChange(uri,null);
+        //notify all the listners when data has changed for the pet content URI
+        getContext().getContentResolver().notifyChange(uri, null);
 
-       return ContentUris.withAppendedId(uri, id);
+        return ContentUris.withAppendedId(uri, id);
     }
 
     @Override
@@ -158,7 +164,7 @@ public class PetProvider extends ContentProvider {
 
         final int match = sUriMatcher.match(uri);
 
-        switch (match){
+        switch (match) {
             case PETS:
                 rowsDeleted = deleteDatabaseObject.delete(PetDataEntry.TABLE_NAME, selection, selectionArgs);
                 break;
@@ -171,7 +177,7 @@ public class PetProvider extends ContentProvider {
 
 
             default:
-                throw new IllegalArgumentException("Delete is not support for :"+ uri);
+                throw new IllegalArgumentException("Delete is not support for :" + uri);
         }
         if (rowsDeleted != 0) {
             getContext().getContentResolver().notifyChange(uri, null);
@@ -184,42 +190,42 @@ public class PetProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-    final int match = sUriMatcher.match(uri);
+        final int match = sUriMatcher.match(uri);
 
-    switch(match){
-        case PETS:
-            return update(uri,values,selection,selectionArgs);
+        switch (match) {
+            case PETS:
+                return update(uri, values, selection, selectionArgs);
 
-        case PET_ID:
-            selection = PetDataEntry._ID+"=?";
-            selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+            case PET_ID:
+                selection = PetDataEntry._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
-            return updatePet(uri,values,selection,selectionArgs);
+                return updatePet(uri, values, selection, selectionArgs);
 
-        default:
-            throw new IllegalArgumentException("Update is not support for "+ uri);
+            default:
+                throw new IllegalArgumentException("Update is not support for " + uri);
+        }
+
     }
 
-    }
-
-    private int updatePet(Uri uri, ContentValues values, String selection, String[] selectionArgs){
+    private int updatePet(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         //sanity check
         String name = values.getAsString(PetDataEntry.COLUMN_PET_NAME);
-        if(name == null){
+        if (name == null) {
             throw new IllegalArgumentException("Pet require a name");
         }
 
         Integer gender = values.getAsInteger(PetDataEntry.COLUMN_PET_GENDER);
-        if(gender == null || !PetDataEntry.isValidGender(gender)){
+        if (gender == null || !PetDataEntry.isValidGender(gender)) {
             throw new IllegalArgumentException("Valid Gender Required");
         }
 
         Integer weight = values.getAsInteger(PetDataEntry.COLUMN_PET_WEIGHT);
-        if(weight<0 || weight == null){
+        if (weight < 0 || weight == null) {
             throw new IllegalArgumentException("Must be higher than 0 Kg");
         }
 
-        if(values.size()==0){
+        if (values.size() == 0) {
             return 0;
         }
 
@@ -234,15 +240,15 @@ public class PetProvider extends ContentProvider {
         }
 
         // Returns the number of database rows affected by the update statement
-        long id = databaseForUpdatePet.update(PetDataEntry.TABLE_NAME,values,selection,selectionArgs);
+        long id = databaseForUpdatePet.update(PetDataEntry.TABLE_NAME, values, selection, selectionArgs);
 
-        if(id == -1){
-            Log.e(LOG_TAG,"Failed to insert "+ uri);
+        if (id == -1) {
+            Log.e(LOG_TAG, "Failed to insert " + uri);
             return 0;
         }
 
         //notify all the listners when data has changed for the pet content URI
-        getContext().getContentResolver().notifyChange(uri,null);
+        getContext().getContentResolver().notifyChange(uri, null);
 
         //return ContentUris.withAppendedId(uri, id);
         return rowsUpdated;
