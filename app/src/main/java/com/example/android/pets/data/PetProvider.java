@@ -154,20 +154,31 @@ public class PetProvider extends ContentProvider {
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
         SQLiteDatabase deleteDatabaseObject = mPetDbHelperObject.getWritableDatabase();
 
+        int rowsDeleted;
+
         final int match = sUriMatcher.match(uri);
 
         switch (match){
             case PETS:
-                return delete(uri, selection,selectionArgs);
+                rowsDeleted = deleteDatabaseObject.delete(PetDataEntry.TABLE_NAME, selection, selectionArgs);
+                break;
 
             case PET_ID:
                 selection = PetDataEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                return deleteDatabaseObject.delete(PetDataEntry.TABLE_NAME,selection,selectionArgs);
+                rowsDeleted = deleteDatabaseObject.delete(PetDataEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+
 
             default:
                 throw new IllegalArgumentException("Delete is not support for :"+ uri);
         }
+        if (rowsDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        // Return the number of rows deleted
+        return rowsDeleted;
 
     }
 
@@ -214,6 +225,13 @@ public class PetProvider extends ContentProvider {
 
         SQLiteDatabase databaseForUpdatePet = mPetDbHelperObject.getWritableDatabase();
 
+        int rowsUpdated = databaseForUpdatePet.update(PetDataEntry.TABLE_NAME, values, selection, selectionArgs);
+
+        // If 1 or more rows were updated, then notify all listeners that the data at the
+        // given URI has changed
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
 
         // Returns the number of database rows affected by the update statement
         long id = databaseForUpdatePet.update(PetDataEntry.TABLE_NAME,values,selection,selectionArgs);
@@ -227,7 +245,7 @@ public class PetProvider extends ContentProvider {
         getContext().getContentResolver().notifyChange(uri,null);
 
         //return ContentUris.withAppendedId(uri, id);
-        return 0;
+        return rowsUpdated;
     }
 
 
