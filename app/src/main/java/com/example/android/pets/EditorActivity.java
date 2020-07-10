@@ -53,6 +53,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     //identify a certain loader
     private static final int PET_LOADER = 0;
 
+    PetCursorAdapter mCursorAdapter;
+
     private PetDbHelper mDbHelper;
 
     /** EditText field to enter the pet's name */
@@ -227,11 +229,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-
+        //updating the new cursor
+        mCursorAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-
+        mCursorAdapter.swapCursor(null);
     }
 }
