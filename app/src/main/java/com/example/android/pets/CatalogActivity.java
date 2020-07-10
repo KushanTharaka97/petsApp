@@ -15,6 +15,7 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -78,7 +79,17 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         petDisplayList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //create new intent to send data to {@link editor activity}
+                Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
 
+                //content uri represent the specific pet that were clicked
+                Uri currentPetUri = ContentUris.withAppendedId(PetDataEntry.CONTENT_URI,id);
+
+                //set the URI to the datafield of the intent
+                    intent.setData(currentPetUri);
+
+                    //launch the Editor Activity to see data transfering
+                startActivity(intent);
             }
         });
 
