@@ -28,6 +28,7 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
@@ -40,10 +41,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
  * Displays list of pets that were entered and stored in the app.
  */
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-    private PetDbHelper mDbHelper;
+   // private PetDbHelper mDbHelper;
 
     //identify a certain loader
-    private static final int URL_LOADER = 0;
+    private static final int PET_LOADER = 0;
 
     PetCursorAdapter mCursorAdapter;
 
@@ -61,14 +62,24 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 startActivity(intent);
             }
         });
+
+        //display in List
+        ListView petDisplayList = findViewById(R.id.lvItems);
+
+        //set empty view
+        View emptyView = findViewById(R.id.empty_view);
+        petDisplayList.setEmptyView(emptyView);
+
+        mCursorAdapter = new PetCursorAdapter(this, null);
+        petDisplayList.setAdapter(mCursorAdapter);
+
+        //kick off the loader
+      //getLoaderManager().initLoader(PET_LOADER,null,this);
+
+
+        LoaderManager.getInstance(this).initLoader(PET_LOADER, null, this);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-       // displayDatabaseInfo();
-        mDbHelper = new PetDbHelper(this);
-    }
 
     /**
      * Temporary helper method to display information in the onscreen TextView about the state of
@@ -92,15 +103,9 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 null,
                 null
         );
+     PetCursorAdapter adapter = new PetCursorAdapter(this, cursor);
+     petDisplayList.setAdapter(adapter);
 
-        //display in List
-        ListView petDisplayList = findViewById(R.id.lvItems);
-        PetCursorAdapter adapter = new PetCursorAdapter(this, cursor);
-        petDisplayList.setAdapter(adapter);
-
-        //set empty view
-        View emptyView = findViewById(R.id.empty_view);
-        petDisplayList.setEmptyView(emptyView);
 
     }
      */
