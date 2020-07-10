@@ -143,6 +143,10 @@ public class PetProvider extends ContentProvider {
            Log.e(LOG_TAG,"Failed to insert "+ uri);
            return null;
        }
+
+       //notify all the listners when data has changed for the pet content URI
+        getContext().getContentResolver().notifyChange(uri,null);
+
        return ContentUris.withAppendedId(uri, id);
     }
 
