@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -73,10 +74,16 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         mCursorAdapter = new PetCursorAdapter(this, null);
         petDisplayList.setAdapter(mCursorAdapter);
 
+        //setup item click listner
+        petDisplayList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+
         //kick off the loader
       //getLoaderManager().initLoader(PET_LOADER,null,this);
-
-
         LoaderManager.getInstance(this).initLoader(PET_LOADER, null, this);
     }
 
