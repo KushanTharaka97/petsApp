@@ -38,6 +38,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
 import com.example.android.pets.data.PetContract;
@@ -48,6 +49,10 @@ import com.example.android.pets.data.PetDbHelper;
  * Allows user to create a new pet or edit an existing one.
  */
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    //identify a certain loader
+    private static final int PET_LOADER = 0;
+
     private PetDbHelper mDbHelper;
 
     /** EditText field to enter the pet's name */
@@ -210,7 +215,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        return null;
+        //projection define
+        String[] projection = {
+                PetDataEntry._ID,
+                PetDataEntry.COLUMN_PET_NAME,
+                PetDataEntry.COLUMN_PET_GENDER,
+                PetDataEntry.COLUMN_PET_WEIGHT
+        };
+        return new CursorLoader(this,PetDataEntry.CONTENT_URI,projection,null,null,null);
     }
 
     @Override
