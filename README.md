@@ -3,6 +3,8 @@ Creating android app with new functioonality
 
 
 
+![](PetAppScreenShots/pets_app.gif)
+
 ## MIT License
 ```
 Copyright (c) 2020 Kushan Tharaka Peiris
