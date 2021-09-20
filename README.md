@@ -1,5 +1,5 @@
 # petsApp
-Creating android app with new functioonality 
+Creating android app with new functioonality.
 
 
 
